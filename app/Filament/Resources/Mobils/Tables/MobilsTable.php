@@ -2,11 +2,14 @@
 
 namespace App\Filament\Resources\Mobils\Tables;
 
+use Filament\Tables\Columns\BadgeColumn;
+use Filament\Tables\Table;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Table;
 
 class MobilsTable
 {
@@ -22,7 +25,18 @@ class MobilsTable
                     ->searchable(),
                 TextColumn::make('nama_tim')
                     ->searchable(),
-                TextColumn::make('status_mobil'),
+                BadgeColumn::make('status_mobil')
+                    ->colors([
+                        'success' => 'Aktif',
+                        'danger' => 'Tidak Aktif',
+                        'warning' => 'Dalam Perbaikan',
+                    ])
+                    ->icons([
+                        'heroicon-o-check-circle' => 'Aktif',
+                        'heroicon-o-x-circle' => 'Tidak Aktif',
+                        'heroicon-o-wrench-screwdriver' => 'Dalam Perbaikan',
+                    ])
+                    ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -36,7 +50,9 @@ class MobilsTable
                 //
             ])
             ->recordActions([
+                ViewAction::make(),
                 EditAction::make(),
+                DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

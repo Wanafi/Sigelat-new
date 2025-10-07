@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nomor_plat');
             $table->string('merk_mobil');
-            $table->string('no_unit');
+            $table->string('no_unit')->nullable();
             $table->string('nama_tim')->nullable();
             $table->Enum ('status_mobil', ['Aktif','Tidak Aktif','Dalam Perbaikan']);
             $table->timestamps();
