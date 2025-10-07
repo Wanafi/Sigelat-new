@@ -20,6 +20,7 @@ class MobilsTable
                 TextColumn::make('nomor_plat')
                     ->searchable(),
                 TextColumn::make('merk_mobil')
+                    ->label('Informasi Detail Mobil')
                     ->searchable(),
                 TextColumn::make('no_unit')
                     ->searchable(),

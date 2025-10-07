@@ -86,8 +86,7 @@ class MobilResource extends Resource
                                     ->label('Nama Alat')
                                     ->icon('heroicon-m-wrench-screwdriver')
                                     ->extraAttributes([
-                                        'class' => 'px-3 py-2 rounded-xl bg-white/30 backdrop-blur-md border border-white/20 
-                shadow-lg text-gray-900',
+                                        'class' => 'px-3 py-2 rounded-xl bg-white/30 backdrop-blur-md border border-white/20 shadow-lg text-gray-900',
                                         'style' => 'transform: perspective(800px) translateZ(10px);',
                                     ]),
 
@@ -95,8 +94,7 @@ class MobilResource extends Resource
                                     ->label('Kode Barcode')
                                     ->icon('heroicon-m-qr-code')
                                     ->extraAttributes([
-                                        'class' => 'px-3 py-2 rounded-xl bg-white/30 backdrop-blur-md border border-white/20 
-                                                    shadow-lg text-gray-900',
+                                        'class' => 'px-3 py-2 rounded-xl bg-white/30 backdrop-blur-md border border-white/20 shadow-lg text-gray-900',
                                         'style' => 'transform: perspective(800px) translateZ(10px);',
                                     ]),
 
@@ -114,8 +112,7 @@ class MobilResource extends Resource
                                         'Rusak' => 'heroicon-o-exclamation-circle',
                                     ])
                                     ->extraAttributes([
-                                        'class' => 'px-3 py-2 rounded-xl bg-white/30 backdrop-blur-md border border-white/20 
-                                                    shadow-lg text-gray-900',
+                                        'class' => 'px-3 py-2 rounded-xl bg-white/30 backdrop-blur-md border border-white/20 shadow-lg text-gray-900',
                                         'style' => 'transform: perspective(800px) translateZ(10px);',
                                     ]),
                             ])
@@ -123,8 +120,8 @@ class MobilResource extends Resource
                                 'md' => 3,
                                 'lg' => 3,
                             ]),
-                    ]),
-
+                    ])
+                    ->columnSpanFull(), // <— 🔥 tambahkan ini di level Section!
             ])
             ->columns(2);
     }
