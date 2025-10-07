@@ -17,12 +17,15 @@ use App\Filament\Resources\Mobils\Pages\ListMobils;
 use App\Filament\Resources\Mobils\Pages\CreateMobil;
 use App\Filament\Resources\Mobils\Schemas\MobilForm;
 use App\Filament\Resources\Mobils\Tables\MobilsTable;
+use UnitEnum;
 
 class MobilResource extends Resource
 {
     protected static ?string $model = Mobil::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string | UnitEnum | null $navigationGroup = 'Manajemen';
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTruck;
 
     protected static ?string $recordTitleAttribute = 'Mobil';
 
@@ -76,7 +79,7 @@ class MobilResource extends Resource
                     ])
                     ->columns(1),
 
-                Section::make('Daftar Alat di Kendaraan')
+                Section::make()
                     ->description('Data seluruh alat yang terdaftar di mobil ini.')
                     ->schema([
                         RepeatableEntry::make('alats')

@@ -16,4 +16,14 @@ class Mobil extends Model
         'nama_tim',
         'status_mobil',
     ];
+
+    public function alats()
+    {
+        return $this->hasMany(Alat::class);
+    }
+
+    public function gelars()
+    {
+        return $this->hasMany(Gelar::class);
+    }
 }

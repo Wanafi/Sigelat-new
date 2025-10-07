@@ -2,11 +2,15 @@
 
 namespace App\Filament\Resources\Alats\Tables;
 
+use Filament\Tables\Table;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Table;
+use Filament\Tables\Columns\BadgeColumn;
+use Filament\Tables\Columns\ImageColumn;
 
 class AlatsTable
 {
@@ -14,23 +18,40 @@ class AlatsTable
     {
         return $table
             ->columns([
-                TextColumn::make('mobil_id')
-                    ->numeric()
-                    ->sortable(),
+                ImageColumn::make('foto')
+                    ->circular()
+                    ->getStateUsing(fn($record) => asset('storage/' . $record->foto))
+                    ->height(50)
+                    ->width(50)
+                    ->getStateUsing(fn($record) => asset('storage/' . $record->foto))
+                    ->url(fn($record) => $record->foto ? asset('storage/' . $record->foto) : null),
                 TextColumn::make('kode_barcode')
                     ->searchable(),
                 TextColumn::make('nama_alat')
                     ->searchable(),
                 TextColumn::make('kategori_alat')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('merek_alat')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('tanggal_masuk')
                     ->date()
-                    ->sortable(),
-                TextColumn::make('status_alat'),
-                TextColumn::make('foto')
-                    ->searchable(),
+                    ->sortable()
+                    ->toggleable(),
+                BadgeColumn::make('status_alat')
+                    ->sortable()
+                    ->toggleable()
+                    ->colors([
+                        'success' => 'Baik',
+                        'danger' => 'Rusak',
+                        'warning' => 'Hilang',
+                    ])
+                    ->icons([
+                        'heroicon-o-check-circle' => 'Baik',
+                        'heroicon-o-exclamation-triangle' => 'Rusak',
+                        'heroicon-o-wrench-screwdriver' => 'Hilang',
+                    ]),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -44,7 +65,9 @@ class AlatsTable
                 //
             ])
             ->recordActions([
+                ViewAction::make(),
                 EditAction::make(),
+                DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
