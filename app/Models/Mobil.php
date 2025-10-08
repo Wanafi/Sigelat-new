@@ -8,4 +8,22 @@ use Illuminate\Database\Eloquent\Model;
 class Mobil extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'nomor_plat',
+        'merk_mobil',
+        'no_unit',
+        'nama_tim',
+        'status_mobil',
+    ];
+
+    public function alats()
+    {
+        return $this->hasMany(Alat::class);
+    }
+
+    public function gelars()
+    {
+        return $this->hasMany(Gelar::class);
+    }
 }
