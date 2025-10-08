@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Gelars\Schemas;
 
 use App\Models\Alat;
 use Filament\Schemas\Schema;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Textarea;
@@ -13,6 +14,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\ToggleButtons;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 
 class GelarForm
@@ -33,15 +35,25 @@ class GelarForm
                             ->live()
                             ->placeholder('Pilih nomor plat mobil')
                             ->afterStateUpdated(function (Set $set, $state) {
+                                if (!$state) {
+                                    $set('detail_alats', []);
+                                    return;
+                                }
+                                
                                 $alatList = Alat::where('mobil_id', $state)
                                     ->get()
-                                    ->map(fn($alat) => [
-                                        'alat_id' => $alat->id,
-                                        'nama_alat' => $alat->nama_alat,
-                                        'status_alat' => $alat->status_alat, // Use status_alat here
-                                        'keterangan' => null,
-                                    ])
+                                    ->values()
+                                    ->map(function($alat) {
+                                        return [
+                                            'alat_id' => (string) $alat->id, // Cast ke string
+                                            'nama_alat' => $alat->nama_alat,
+                                            'status_alat' => $alat->status_alat,
+                                            'keterangan' => '',
+                                            'foto_kondisi' => null,
+                                        ];
+                                    })
                                     ->toArray();
+                                    
                                 $set('detail_alats', $alatList);
                             }),
 
@@ -51,15 +63,6 @@ class GelarForm
                             ->required()
                             ->native(false)
                             ->displayFormat('d/m/Y'),
-
-                        Select::make('status')
-                            ->label('Status Kelengkapan')
-                            ->options([
-                                'Lengkap' => 'Lengkap',
-                                'Tidak Lengkap' => 'Tidak Lengkap',
-                            ])
-                            ->default('Tidak Lengkap')
-                            ->required(),
 
                         TagsInput::make('pelaksana')
                             ->label('Nama Pelaksana')
@@ -73,28 +76,24 @@ class GelarForm
                     ->collapsible(),
 
                 Section::make('Daftar Alat di Mobil')
-                    ->description('Periksa dan update kondisi setiap alat')
+                    ->description('Periksa dan update kondisi setiap alat. Status gelar akan otomatis "Tidak Lengkap" jika ada alat yang hilang.')
                     ->icon('heroicon-o-wrench-screwdriver')
                     ->schema([
                         Repeater::make('detail_alats')
-                            ->statePath('detail_alats')
-                            ->grid(2)
                             ->schema([
-                                TextInput::make('alat_id')
-                                    ->label('ID Alat')
-                                    ->hidden(),
+                                // Gunakan Hidden untuk menyimpan alat_id
+                                Hidden::make('alat_id'),
 
                                 TextInput::make('nama_alat')
                                     ->label('Nama Alat')
                                     ->disabled()
-                                    ->columns(3)
                                     ->dehydrated(false)
-                                    ->extraAttributes(['class' => 'font-semibold']),
+                                    ->extraAttributes(['class' => 'font-semibold'])
+                                    ->columnSpan(3),
 
                                 ToggleButtons::make('status_alat')
                                     ->label('Kondisi Alat')
                                     ->grouped()
-                                    ->columns(2)
                                     ->options([
                                         'Baik' => 'Baik',
                                         'Rusak' => 'Rusak',
@@ -112,16 +111,7 @@ class GelarForm
                                     ])
                                     ->required()
                                     ->inline()
-                                    ->reactive()
-                                    ->afterStateUpdated(function ($state, callable $get) {
-                                        $alatId = $get('alat_id');
-                                        if ($alatId && in_array($state, ['Baik', 'Rusak', 'Hilang'])) {
-                                            $alat = Alat::find($alatId);
-                                            if ($alat && $alat->status_alat !== $state) {
-                                                $alat->update(['status_alat' => $state]);
-                                            }
-                                        }
-                                    }),
+                                    ->columnSpan(2),
 
                                 Textarea::make('keterangan')
                                     ->label('Keterangan')
@@ -147,10 +137,11 @@ class GelarForm
                             ->disableItemCreation()
                             ->disableItemDeletion()
                             ->disableItemMovement()
-                            ->visible(fn($get) => filled($get('detail_alats')))
+                            ->visible(fn(Get $get) => filled($get('detail_alats')))
                             ->itemLabel(fn(array $state): ?string => $state['nama_alat'] ?? null)
                             ->collapsed()
-                            ->cloneable(false),
+                            ->cloneable(false)
+                            ->defaultItems(0),
                     ])
                     ->collapsible()
                     ->columnspanFull(),
