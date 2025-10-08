@@ -21,7 +21,7 @@ class MobilForm
             ->components([
                 Grid::make([
                     'default' => 1,
-                    'lg' => 2, // dua kolom di layar besar
+                    'lg' => 2,
                 ])
                     ->schema([
                         Section::make('Informasi Mobil')
