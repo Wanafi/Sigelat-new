@@ -55,9 +55,10 @@ class AlatResource extends Resource
                                     ->label('Foto Alat')
                                     ->height(120)
                                     ->width(120)
-                                    ->defaultImageUrl(asset('images/no-image.png'))
                                     ->extraAttributes(['class' => 'flex justify-center'])
-                                    ->columnSpan(1),
+                                    ->columnSpan(1)
+                                    ->getStateUsing(fn($record) => asset('storage/' . $record->foto))
+                                    ->url(fn($record) => $record->foto ? asset('storage/' . $record->foto) : null),
 
                                 // Kolom 2-4: Informasi Detail (3 kolom)
                                 Grid::make(3)
@@ -137,13 +138,13 @@ class AlatResource extends Resource
                             }),
 
                         Actions::make([
-                            Action::make('printQr')
+                            Action::make('printqr')
                                 ->label('Print QR')
                                 ->button()
                                 ->color('success')
                                 ->icon('heroicon-o-printer')
                                 ->openUrlInNewTab()
-                            // ->url(fn($record) => route('alat.print-qr', $record))
+                                ->url(fn($record) => route('printqr.printqr', $record))
                         ])
                             ->alignment(Alignment::Center)
                             ->fullWidth(),
