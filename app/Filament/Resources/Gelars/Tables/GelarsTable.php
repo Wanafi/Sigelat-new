@@ -16,12 +16,32 @@ class GelarsTable
     {
         return $table
             ->columns([
-                TextColumn::make('mobil_id')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('status'),
+                TextColumn::make('mobil.nomor_plat')
+                    ->label('Nomor Plat')
+                    ->searchable()
+                    ->sortable()
+                    ->weight('bold')
+                    ->icon('heroicon-o-truck')
+                    ->copyable(),
+                TextColumn::make('status')
+                    ->label('Status')
+                    ->badge()
+                    ->colors([
+                        'success' => 'Lengkap',
+                        'warning' => 'Tidak Lengkap',
+                    ])
+                    ->icons([
+                        'heroicon-o-check-circle' => 'Lengkap',
+                        'heroicon-o-exclamation-triangle' => 'Tidak Lengkap',
+                    ])
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('tanggal_cek')
-                    ->date()
+                    ->label('Tanggal Kegiatan')
+                    ->date('d M Y')
+                    ->sortable()
+                    ->icon('heroicon-o-calendar')
+                    ->description(fn ($record) => \Carbon\Carbon::parse($record->tanggal_cek)->diffForHumans())->date()
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
