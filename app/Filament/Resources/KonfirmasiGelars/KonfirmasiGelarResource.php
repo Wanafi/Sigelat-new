@@ -175,13 +175,6 @@ class KonfirmasiGelarResource extends Resource
                     ->schema([
                         \Filament\Infolists\Components\RepeatableEntry::make('detailAlats')
                             ->schema([
-                                \Filament\Infolists\Components\ImageEntry::make('foto_kondisi')
-                                    ->label('Foto')
-                                    ->disk('public')
-                                    ->height(150)
-                                    ->width(150)
-                                    ->visible(fn($state) => filled($state)),
-
                                 \Filament\Infolists\Components\TextEntry::make('alat.nama_alat')
                                     ->label('Nama Alat')
                                     ->icon('heroicon-o-wrench-screwdriver')
@@ -208,8 +201,7 @@ class KonfirmasiGelarResource extends Resource
                                 \Filament\Infolists\Components\TextEntry::make('keterangan')
                                     ->label('Catatan')
                                     ->icon('heroicon-o-chat-bubble-left-right')
-                                    ->placeholder('Tidak ada catatan')
-                                    ->columnSpanFull(),
+                                    ->placeholder('Tidak ada catatan'),
                             ])
                             ->columns(3)
                             ->visible(fn($record) => $record->detailAlats()->exists())
