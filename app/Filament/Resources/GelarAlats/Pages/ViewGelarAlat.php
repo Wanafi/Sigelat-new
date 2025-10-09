@@ -9,11 +9,4 @@ use Filament\Resources\Pages\ViewRecord;
 class ViewGelarAlat extends ViewRecord
 {
     protected static string $resource = GelarAlatResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            EditAction::make(),
-        ];
-    }
 }

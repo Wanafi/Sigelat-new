@@ -2,8 +2,6 @@
 
 namespace App\Filament\Resources\GelarAlats;
 
-use App\Filament\Resources\GelarAlats\Pages\CreateGelarAlat;
-use App\Filament\Resources\GelarAlats\Pages\EditGelarAlat;
 use App\Filament\Resources\GelarAlats\Pages\ListGelarAlats;
 use App\Filament\Resources\GelarAlats\Pages\ViewGelarAlat;
 use App\Filament\Resources\GelarAlats\Schemas\GelarAlatForm;
@@ -22,7 +20,11 @@ class GelarAlatResource extends Resource
     protected static ?string $model = DetailGelar::class;
     protected static string | UnitEnum | null $navigationGroup = 'Laporan';
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentList;
-    protected static ?string $recordTitleAttribute = 'Gelar Alat';
+    protected static ?string $navigationLabel = 'Kondisi Alat';
+    protected static ?string $modelLabel = 'Kondisi Alat';
+    protected static ?string $pluralModelLabel = 'Kondisi Alat';
+    protected static ?string $recordTitleAttribute = 'alat.nama_alat';
+    
     public static function form(Schema $schema): Schema
     {
         return GelarAlatForm::configure($schema);
@@ -40,18 +42,24 @@ class GelarAlatResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array
     {
         return [
             'index' => ListGelarAlats::route('/'),
-            'create' => CreateGelarAlat::route('/create'),
             'view' => ViewGelarAlat::route('/{record}'),
-            'edit' => EditGelarAlat::route('/{record}/edit'),
         ];
+    }
+    
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+    
+    public static function canEdit($record): bool
+    {
+        return false;
     }
 }
