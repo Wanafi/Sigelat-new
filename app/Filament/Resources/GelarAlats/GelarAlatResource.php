@@ -20,9 +20,9 @@ class GelarAlatResource extends Resource
     protected static ?string $model = DetailGelar::class;
     protected static string | UnitEnum | null $navigationGroup = 'Laporan';
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentList;
-    protected static ?string $navigationLabel = 'Dokumentasi Alat';
-    protected static ?string $modelLabel = 'Dokumentasi Alat';
-    protected static ?string $pluralModelLabel = 'Dokumentasi Alat';
+    protected static ?string $navigationLabel = 'Kondisi Alat';
+    protected static ?string $modelLabel = 'Kondisi Alat';
+    protected static ?string $pluralModelLabel = 'Kondisi Alat';
     protected static ?string $recordTitleAttribute = 'alat.nama_alat';
     
     public static function form(Schema $schema): Schema

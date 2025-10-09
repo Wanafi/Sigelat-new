@@ -9,11 +9,4 @@ use Filament\Resources\Pages\ListRecords;
 class ListGelarAlats extends ListRecords
 {
     protected static string $resource = GelarAlatResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            CreateAction::make(),
-        ];
-    }
 }
