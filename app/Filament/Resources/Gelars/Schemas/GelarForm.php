@@ -124,6 +124,7 @@ class GelarForm
                                     ->directory('foto-kondisi')
                                     ->image()
                                     ->imageEditor()
+                                    ->disk('public')
                                     ->imagePreviewHeight('200')
                                     ->maxSize(2048)
                                     ->helperText('Ambil foto untuk dokumentasi kondisi alat')

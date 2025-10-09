@@ -20,7 +20,6 @@ class AlatsTable
             ->columns([
                 ImageColumn::make('foto')
                     ->circular()
-                    ->getStateUsing(fn($record) => asset('storage/' . $record->foto))
                     ->height(50)
                     ->width(50)
                     ->getStateUsing(fn($record) => asset('storage/' . $record->foto))
