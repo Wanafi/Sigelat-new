@@ -15,13 +15,18 @@ class Gelar extends Model
         'status',
         'tanggal_cek',
         'pelaksana',
+        'is_confirmed',
+        'confirmed_at',
+        'confirmed_by',
     ];
 
     protected $casts = [
         'tanggal_cek' => 'date',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'confirmed_at' => 'datetime',
         'pelaksana' => 'array',
+        'is_confirmed' => 'boolean',
     ];
 
     public function mobil()
@@ -39,5 +44,8 @@ class Gelar extends Model
         return $this->hasMany(\App\Models\DetailGelar::class);
     }
 
-
+    public function confirmedBy()
+    {
+        return $this->belongsTo(User::class, 'confirmed_by');
+    }
 }
