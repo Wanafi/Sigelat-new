@@ -40,8 +40,7 @@ class AdminPanelProvider extends PanelProvider
             NavigationGroup::make()
                  ->label('Manajemen'),
             NavigationGroup::make()
-                ->label('Blog')
-                ->icon('heroicon-o-pencil'),
+                ->label('Laporan'),
             NavigationGroup::make()
                 ->label(fn (): string => __('navigation.settings'))
                 ->icon('heroicon-o-cog-6-tooth')
