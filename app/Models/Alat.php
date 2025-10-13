@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class Alat extends Model
 {
@@ -20,6 +22,7 @@ class Alat extends Model
         'tanggal_masuk',
         'status_alat',
     ];
+
 
     public function mobil()
     {
