@@ -20,6 +20,10 @@ class UsersTable
                 TextColumn::make('email')
                     ->label('Email address')
                     ->searchable(),
+                TextColumn::make('roles.name')
+                    ->label('Hak Akses')
+                    ->sortable()
+                    ->badge(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

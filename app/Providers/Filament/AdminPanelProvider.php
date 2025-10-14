@@ -13,6 +13,7 @@ use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Jacobtims\FilamentLogger\FilamentLoggerPlugin;
+use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
@@ -39,18 +40,18 @@ class AdminPanelProvider extends PanelProvider
                 Pages\Dashboard::class,
             ])
             ->navigationGroups([
-            NavigationGroup::make()
-                 ->label('Pengguna & Peran'),
-            NavigationGroup::make()
-                 ->label('Manajemen'),
-            NavigationGroup::make()
-                ->label('Laporan'),
-            NavigationGroup::make()
-                ->label('Riwayat'),
-            NavigationGroup::make()
-                ->label(fn (): string => __('navigation.settings'))
-                ->icon('heroicon-o-cog-6-tooth')
-                ->collapsed(),
+                NavigationGroup::make()
+                    ->label('Pengguna & Peran'),
+                NavigationGroup::make()
+                    ->label('Manajemen'),
+                NavigationGroup::make()
+                    ->label('Laporan'),
+                NavigationGroup::make()
+                    ->label('Riwayat'),
+                NavigationGroup::make()
+                    ->label(fn(): string => __('navigation.settings'))
+                    ->icon('heroicon-o-cog-6-tooth')
+                    ->collapsed(),
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
@@ -73,6 +74,10 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 FilamentLoggerPlugin::make(),
+                FilamentShieldPlugin::make()
+                    ->navigationGroup('Pengguna & Peran')
+                    ->navigationLabel('Hak Akses')
+                    ->navigationIcon('heroicon-o-shield-check'),
             ]);
     }
 }
