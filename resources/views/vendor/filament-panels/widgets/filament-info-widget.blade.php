@@ -5,12 +5,8 @@
                 href="https://web.pln.co.id/"
                 rel="noopener noreferrer"
                 target="_blank">
-                <img src="{{ asset('images/Logo_PLN.png') }}" alt="Logo PLN" style="width: 60px; height: auto;" />
+                <img src="{{ asset('images/Logo_PLN-1.svg') }}" alt="Logo PLN" style="width: 120px; height: auto;" />
             </a>
-
-            <p class="fi-filament-info-widget-version">
-                {{ \Composer\InstalledVersions::getPrettyVersion('filament/filament') }}
-            </p>
         </div>
 
         <div class="fi-filament-info-widget-links">
