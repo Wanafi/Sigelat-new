@@ -24,7 +24,7 @@ class Dashboard extends BaseDashboard
     {
         return [
             \App\Filament\Widgets\DashboardStatsWidget::class,
-            \App\Filament\Widgets\GelarActivityChartWidget::class,
+            \App\Filament\Widgets\AlatPerMobilChart::class,
             \App\Filament\Widgets\RecentActivityWidget::class,
         ];
     }

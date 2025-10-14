@@ -28,7 +28,7 @@
             {{-- Chart Area --}}
             <div class="lg:col-span-2">
                 @foreach ($this->getWidgets() as $widget)
-                    @if ($widget === \App\Filament\Widgets\GelarActivityChartWidget::class)
+                    @if ($widget === \App\Filament\Widgets\AlatPerMobilChart::class)
                         @livewire($widget)
                     @endif
                 @endforeach
