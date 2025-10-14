@@ -40,9 +40,13 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->navigationGroups([
             NavigationGroup::make()
+                 ->label('Pengguna & Peran'),
+            NavigationGroup::make()
                  ->label('Manajemen'),
             NavigationGroup::make()
                 ->label('Laporan'),
+            NavigationGroup::make()
+                ->label('Riwayat'),
             NavigationGroup::make()
                 ->label(fn (): string => __('navigation.settings'))
                 ->icon('heroicon-o-cog-6-tooth')

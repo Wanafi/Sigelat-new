@@ -20,7 +20,7 @@ class KonfirmasiGelarResource extends Resource
 {
     protected static ?string $model = Gelar::class;
     protected static string | UnitEnum | null $navigationGroup = 'Laporan';
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentList;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentCheck;
     protected static ?string $navigationLabel = 'Konfirmasi Laporan';
     protected static ?string $modelLabel = 'Konfirmasi Laporan';
     protected static ?string $pluralModelLabel = 'Konfirmasi Laporan';
