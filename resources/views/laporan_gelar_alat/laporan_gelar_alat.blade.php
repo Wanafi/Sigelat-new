@@ -1,292 +1,231 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Laporan Gelar Alat - {{ $gelar->mobil->nomor_plat }}</title>
-    <style>
-        @page {
-            margin: 20mm 15mm 15mm 15mm;
-            size: A4 portrait;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: Arial, sans-serif;
-            font-size: 9pt;
-            line-height: 1.3;
-            color: #000;
-        }
-        
-        /* Header */
-        .header-container {
-            width: 100%;
-            margin-bottom: 10mm;
-            overflow: hidden;
-            padding-bottom: 5mm;
-            border-bottom: 2px solid #00AFF0;
-        }
-        
-        .header-logo {
-            float: left;
-            width: 100px;
-        }
-        
-        .header-logo img {
-            height: 60px;
-            display: block;
-        }
-        
-        .header-text {
-            float: right;
-            text-align: right;
-            padding-top: 10px;
-        }
-        
-        .header-text div {
-            font-style: italic;
-            font-size: 10pt;
-            margin-bottom: 2px;
-            line-height: 1.4;
-        }
-        
-        .clearfix::after {
-            content: "";
-            display: table;
-            clear: both;
-        }
-        
-        /* Table */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 8mm;
-            font-size: 8.5pt;
-            border: 1.5px solid #000;
-        }
-        
-        th, td {
-            border: 1px solid #000;
-            padding: 4mm 3mm;
-            text-align: center;
-            vertical-align: middle;
-            line-height: 1.3;
-        }
-        
-        thead th {
-            background-color: #FFEB3B;
-            font-weight: bold;
-            font-size: 9pt;
-            padding: 3mm;
-        }
-        
-        .left-align {
-            text-align: left;
-            padding-left: 4mm;
-        }
-        
-        .vertical-text {
-            writing-mode: vertical-rl;
-            transform: rotate(180deg);
-            font-weight: bold;
-            font-size: 8pt;
-            padding: 3mm 2mm;
-            min-width: 15px;
-        }
-        
-        tbody td {
-            font-size: 8.5pt;
-            padding: 3mm;
-        }
-        
-        /* Signature */
-        .signature-wrapper {
-            margin-top: 15mm;
-            font-size: 9pt;
-            page-break-inside: avoid;
-        }
-        
-        .location-header {
-            width: 100%;
-            margin-bottom: 8mm;
-            overflow: hidden;
-        }
-        
-        .location-left {
-            float: left;
-            width: 48%;
-            text-align: left;
-            line-height: 1.5;
-        }
-        
-        .location-right {
-            float: right;
-            width: 48%;
-            text-align: right;
-            line-height: 1.5;
-        }
-        
-        .signatures-container {
-            width: 100%;
-            margin-top: 10mm;
-            overflow: hidden;
-        }
-        
-        .signature-column-left {
-            float: left;
-            width: 48%;
-            padding-right: 5mm;
-        }
-        
-        .signature-column-right {
-            float: right;
-            width: 48%;
-            padding-left: 5mm;
-        }
-        
-        .signature-box {
-            text-align: center;
-            margin-bottom: 20mm;
-            min-height: 25mm;
-        }
-        
-        .signature-name {
-            display: inline-block;
-            margin-top: 18mm;
-            padding-top: 2mm;
-            border-top: 1.5px solid #000;
-            min-width: 60%;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 9pt;
-        }
-        
-        .signature-title {
-            font-size: 8pt;
-            margin-top: 2mm;
-            font-weight: normal;
-            line-height: 1.3;
-        }
-    </style>
-</head>
-<body>
-    {{-- HEADER --}}
-    <div class="header-container clearfix">
-        <div class="header-logo">
-            <img src="{{ public_path('images/plnt.png') }}" alt="Logo PLN">
-        </div>
-        <div class="header-text">
-            <div>PT PLN (Persero)</div>
-            <div>ULP Ahmad Yani Banjarmasin</div>
-            <div>Laporan Kegiatan Gelar Alat Operasional</div>
-        </div>
-    </div>
+<x-filament-panels::page>
+    <div id="print-area" class="page-a4">
+        <style>
+            .page-a4 {
+                background-color: white;
+                width: 210mm;
+                min-height: 297mm;
+                margin: auto;
+                padding: 12mm 12mm;
+                font-family: Arial, sans-serif;
+                font-size: 8.5pt;
+                color: #000;
+            }
 
-    {{-- TABLE --}}
-    <table>
-        <thead>
-            <tr>
-                <th rowspan="2" style="width: 3%;"></th>
-                <th rowspan="2" style="width: 4%;">No</th>
-                <th rowspan="2" style="width: 40%;">
-                    Yantek Unit {{ $gelar->mobil->nama_tim ?? '' }} 
-                    {{ $gelar->mobil->no_unit ?? '' }} 
-                    {{ $gelar->mobil->nomor_plat ?? '' }}
-                </th>
-                <th rowspan="2" style="width: 7%;">Satuan</th>
-                <th colspan="3" style="width: 18%;">KONDISI</th>
-                <th rowspan="2" style="width: 28%;">Ket</th>
-            </tr>
-            <tr>
-                <th style="width: 6%;">B</th>
-                <th style="width: 6%;">R</th>
-                <th style="width: 6%;">H</th>
-            </tr>
-        </thead>
-        <tbody>
-            @php
-                $grouped = $gelar->detailGelars->groupBy(fn($item) => $item->alat->kategori_alat ?? 'Lain-lain');
-                $rowNumber = 1;
-            @endphp
+            .manual-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 2px solid #00AFF0;
+                padding-bottom: 8px;
+                margin-bottom: 8px;
+            }
 
-            @foreach ($grouped as $kategori => $items)
-                @foreach ($items as $index => $detail)
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 7.5pt;
+                margin-top: 6px;
+                line-height: 1.2;
+                table-layout: fixed;
+            }
+
+            th,
+            td {
+                border: 1px solid #000;
+                padding: 3px 4px;
+                text-align: center;
+                vertical-align: middle;
+                word-wrap: break-word;
+            }
+
+            thead th {
+                background-color: #FFEB3B;
+                font-weight: bold;
+            }
+
+            .left-align {
+                text-align: left;
+            }
+
+            .vertical-text {
+                writing-mode: vertical-rl;
+                transform: rotate(180deg);
+                font-weight: bold;
+                text-align: center;
+            }
+
+            .signature-section {
+                margin-top: 25px;
+                display: flex;
+                justify-content: space-between;
+                font-size: 9pt;
+            }
+
+            .signature-box {
+                text-align: center;
+                width: 45%;
+            }
+
+            @media print {
+                @page {
+                    size: A4;
+                    margin: 12mm 12mm;
+                }
+
+                body * {
+                    visibility: hidden;
+                }
+
+                #print-area,
+                #print-area * {
+                    visibility: visible;
+                }
+
+                #print-area {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                }
+
+                header,
+                .fi-header,
+                .fi-sidebar,
+                .fi-topbar,
+                .fi-page-header {
+                    display: none !important;
+                }
+            }
+        </style>
+
+        {{-- ✅ HEADER --}}
+        <div class="manual-header">
+            <img src="{{ asset('images/plnt.png') }}" alt="Logo PLN" style="height: 55px;">
+            <div>
+                <div style="font-size: 9pt; font-style: italic;">PT PLN (Persero)</div>
+                <div style="font-size: 9pt; font-style: italic;">ULP Ahmad Yani Banjarmasin</div>
+                <div style="font-size: 9pt; font-style: italic;">Laporan Kegiatan Gelar Alat Operasional</div>
+            </div>
+        </div>
+
+        {{-- ✅ TABEL --}}
+        <table>
+            <thead>
                 <tr>
-                    @if ($index === 0)
-                    <td class="vertical-text" rowspan="{{ $items->count() }}">
-                        {{ strtoupper(str_replace('_', ' ', $kategori)) }}
-                    </td>
-                    @endif
-                    <td>{{ $rowNumber++ }}</td>
-                    <td class="left-align">{{ $detail->alat->nama_alat ?? '-' }}</td>
-                    <td>{{ $detail->alat->satuan ?? 'bh' }}</td>
-                    <td style="font-size: 11pt;">{{ $detail->status_alat == 'Baik' ? '✔' : '' }}</td>
-                    <td style="font-size: 11pt;">{{ $detail->status_alat == 'Rusak' ? '✔' : '' }}</td>
-                    <td style="font-size: 11pt;">{{ $detail->status_alat == 'Hilang' ? '✔' : '' }}</td>
-                    <td class="left-align">{{ $detail->keterangan ?? '-' }}</td>
+                    <th style="width: 4%;" rowspan="2"></th>
+                    <th style="width: 4%;" rowspan="2">No</th>
+                    <th style="width: 38%;" rowspan="2">
+                        {{ $gelar->mobil->nama_tim ?? '-' }}
+                        {{ $gelar->mobil->no_unit ?? '-' }}
+                        {{ $gelar->mobil->nomor_plat ?? '-' }}
+                    </th>
+                    <th style="width: 6%;" rowspan="2">Satuan</th>
+                    <th style="width: 18%;" colspan="3">KONDISI</th>
+                    <th style="width: 30%;" rowspan="2">Ket</th>
                 </tr>
-                @endforeach
-            @endforeach
-        </tbody>
-    </table>
+                <tr>
+                    <th style="width: 6%;">B</th>
+                    <th style="width: 6%;">R</th>
+                    <th style="width: 6%;">H</th>
+                </tr>
+            </thead>
+            <tbody>
+                @php
+                    $grouped = $gelar->detailGelars->groupBy(fn($item) => $item->alat->kategori_alat ?? 'Lain-lain');
+                    $rowNumber = 1;
+                @endphp
 
-    {{-- SIGNATURE SECTION --}}
-    <div class="signature-wrapper">
+                @foreach ($grouped as $kategori => $items)
+                    @foreach ($items as $index => $detail)
+                        <tr>
+                            @if ($index === 0)
+                                <td class="vertical-text" rowspan="{{ $items->count() }}">
+                                    {{ strtoupper(str_replace('_', ' ', $kategori)) }}
+                                </td>
+                            @endif
+                            <td>{{ $rowNumber++ }}</td>
+                            <td class="left-align">{{ $detail->alat->nama_alat ?? '-' }}</td>
+                            <td>{{ $detail->alat->satuan ?? 'bh' }}</td>
+                            <td style="font-size: 11pt;">{{ $detail->status_alat == 'Baik' ? '✔' : '' }}</td>
+                            <td style="font-size: 11pt;">{{ $detail->status_alat == 'Rusak' ? '✔' : '' }}</td>
+                            <td style="font-size: 11pt;">{{ $detail->status_alat == 'Hilang' ? '✔' : '' }}</td>
+                            <td class="left-align">{{ $detail->keterangan ?? '-' }}</td>
+                        </tr>
+                    @endforeach
+                @endforeach
+            </tbody>
+        </table>
+
+        {{-- ✅ TANDA TANGAN --}}
         @php
-            $tanggalCetak = $gelar->confirmed_at 
+            $tanggalCetak = $gelar->confirmed_at
                 ? \Carbon\Carbon::parse($gelar->confirmed_at)->translatedFormat('d F Y')
-                : \Carbon\Carbon::parse($gelar->tanggal_cek)->translatedFormat('d F Y');
-            
-            // Ambil pelaksana dari array
-            $pelaksanaList = is_array($gelar->pelaksana) ? $gelar->pelaksana : [];
-            $pelaksana1 = $pelaksanaList[0] ?? 'NAMA PELAKSANA 1';
-            $pelaksana2 = $pelaksanaList[1] ?? 'NAMA PELAKSANA 2';
+                : now()->translatedFormat('d F Y');
         @endphp
 
-        <div class="location-header clearfix">
-            <div class="location-left">
-                PT PLN (Persero) UP3 Banjarmasin<br>
-                ULP AHMAD YANI
-            </div>
-            <div class="location-right">
-                Banjarmasin, {{ $tanggalCetak }}<br>
-                PT PLN Nusa Daya UL Banjarmasin<br>
-                ULP AHMAD YANI
-            </div>
-        </div>
-
-        <div class="signatures-container clearfix">
-            {{-- Kolom Kiri: 2 Pelaksana --}}
-            <div class="signature-column-left">
-                <div class="signature-box">
-                    <span class="signature-name">{{ strtoupper($pelaksana1) }}</span>
-                    <div class="signature-title">Team Leader K3LK</div>
+        <div style="margin-top: 15px; font-size: 8pt;">
+            {{-- Header lokasi & tanggal --}}
+            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <div style="text-align: left;">
+                    PT PLN (Persero) UP3 Banjarmasin<br>
+                    ULP AHMAD YANI
                 </div>
-                
-                <div class="signature-box">
-                    <span class="signature-name">{{ strtoupper($pelaksana2) }}</span>
-                    <div class="signature-title">Team Leader K3LK</div>
+                <div style="text-align: right;">
+                    Banjarmasin, {{ $tanggalCetak }}<br>
+                    PT PLN Nusa Daya UL Banjarmasin<br>
+                    ULP AHMAD YANI
                 </div>
             </div>
 
-            {{-- Kolom Kanan: 2 Pelaksana --}}
-            <div class="signature-column-right">
-                <div class="signature-box">
-                    <span class="signature-name">{{ strtoupper($pelaksana1) }}</span>
-                    <div class="signature-title">Team Leader K3LK</div>
+            {{-- Tanda tangan --}}
+            <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                {{-- Kiri --}}
+                <div style="width: 48%; text-align: center;">
+                    <div style="margin-bottom: 30px;">
+                        <div style="font-size: 8pt;">
+                            <strong style="display: block;">NAUFAL NAJWAN</strong>
+                            <div style="border-top: 1px solid #000; margin-top: 2px; width: 80%; margin-left:auto; margin-right:auto;"></div>
+                            <div style="margin-top: 2px;">Team Leader K3LK</div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div style="font-size: 8pt;">
+                            <strong style="display: block;">FAHRUL</strong>
+                            <div style="border-top: 1px solid #000; margin-top: 2px; width: 80%; margin-left:auto; margin-right:auto;"></div>
+                            <div style="margin-top: 2px;">Team Leader K3LK</div>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="signature-box">
-                    <span class="signature-name">{{ strtoupper($pelaksana2) }}</span>
-                    <div class="signature-title">Team Leader K3LK</div>
+
+                {{-- Kanan --}}
+                <div style="width: 48%; text-align: center;">
+                    <div style="margin-bottom: 30px;">
+                        <div style="font-size: 8pt;">
+                            <strong style="display: block;">NARI</strong>
+                            <div style="border-top: 1px solid #000; margin-top: 2px; width: 80%; margin-left:auto; margin-right:auto;"></div>
+                            <div style="margin-top: 2px;">Supervisor</div>
+                        </div>
+                    </div>
+
+                    <div style="font-size: 8pt;">
+                        <strong style="display: block;">WIDIANTO</strong>
+                        <div style="border-top: 1px solid #000; margin-top: 2px; width: 80%; margin-left:auto; margin-right:auto;"></div>
+                        <div style="margin-top: 2px;">Manager ULP</div>
+                    </div>
                 </div>
             </div>
         </div>
+
+        {{-- ✅ JS Print Trigger --}}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Livewire.on('triggerPrint', () => {
+                    // Call the print method in the Livewire component
+                    Livewire.emit('print');
+                });
+            });
+        </script>
     </div>
-</body>
-</html>
+</x-filament-panels::page>

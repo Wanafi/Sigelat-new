@@ -7,8 +7,10 @@ use Filament\Resources\Pages\ViewRecord;
 use Filament\Notifications\Notification;
 use App\Filament\Resources\KonfirmasiGelars\KonfirmasiGelarResource;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Gelar; // Import the Gelar model
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Illuminate\View\View;
 
 class ViewKonfirmasiGelar extends ViewRecord
 {
@@ -30,11 +32,12 @@ class ViewKonfirmasiGelar extends ViewRecord
                 ->modalHeading('Konfirmasi Laporan')
                 ->modalDescription('Apakah Anda yakin ingin mengkonfirmasi laporan ini? Setelah dikonfirmasi, Anda dapat mencetak dokumen PDF.')
                 ->modalSubmitActionLabel('Ya, Konfirmasi')
-                ->visible(fn($record) => !$record->is_confirmed)
-                ->action(function ($record) {
+                ->visible(fn(Gelar $record): bool => !$record->is_confirmed) // Use type-hinted $record
+                ->action(function (Gelar $record): void { // Use type-hinted $record
                     $record->update([
                         'is_confirmed' => true,
                         'confirmed_by' => optional(Auth::user())->id,
+                        'confirmed_at' => now(),
                     ]);
 
                     Notification::make()
@@ -48,32 +51,32 @@ class ViewKonfirmasiGelar extends ViewRecord
                 ->label('Cetak PDF')
                 ->icon('heroicon-o-printer')
                 ->color('primary')
-                ->visible(fn($record) => $record->is_confirmed)
-                ->action(function ($record) {
-                    return $this->generatePdf($record);
+                ->visible(fn(Gelar $record): bool => $record->is_confirmed) // Use type-hinted $record
+                ->action(function (ViewKonfirmasiGelar $livewire, Gelar $record): StreamedResponse {
+                    return $livewire->generatePdf($record);
                 }),
         ];
     }
 
-    protected function generatePdf($record)
+    protected function generatePdf(Gelar $record): StreamedResponse
     {
-        // Load relasi yang dibutuhkan
-        $record->load(['mobil', 'detailAlats.alat', 'confirmedBy']);
-        
+        // Pastikan semua relasi yang dibutuhkan sudah diload
+        $record->load(['mobil', 'detailGelars.alat', 'confirmedBy']);
+
         $data = [
             'gelar' => $record,
-            'tanggal_cetak' => now()->format('d F Y'),
         ];
 
-        // Generate PDF
+        // Gunakan Blade view kamu sendiri: resources/views/laporan-gelar.blade.php
         $pdf = Pdf::loadView('laporan_gelar_alat.laporan_gelar_alat', $data)
             ->setPaper('a4', 'portrait')
             ->setOption('margin-top', 10)
             ->setOption('margin-bottom', 10)
-            ->setOption('margin-left', 15)
-            ->setOption('margin-right', 15);
+            ->setOption('margin-left', 10)
+            ->setOption('margin-right', 10);
 
-        $filename = 'Laporan-Gelar-Alat-' . $record->mobil->nomor_plat . '-' . $record->tanggal_cek->format('Y-m-d') . '.pdf';
+        $filename = 'Laporan-Gelar-Alat-' . ($record->mobil->nomor_plat ?? 'TanpaPlat')
+            . '-' . now()->format('Y-m-d') . '.pdf';
 
         return response()->streamDownload(function () use ($pdf) {
             echo $pdf->output();
