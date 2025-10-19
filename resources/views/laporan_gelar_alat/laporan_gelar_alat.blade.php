@@ -1,133 +1,174 @@
-<x-filament-panels::page>
-    <div id="print-area" class="page-a4">
-        <style>
-            .page-a4 {
-                background-color: white;
-                width: 210mm;
-                min-height: 297mm;
-                margin: auto;
-                padding: 12mm 12mm;
-                font-family: Arial, sans-serif;
-                font-size: 8.5pt;
-                color: #000;
-            }
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Laporan Gelar Alat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 10px;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.3;
+        }
 
-            .manual-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                border-bottom: 2px solid #00AFF0;
-                padding-bottom: 8px;
-                margin-bottom: 8px;
-            }
+        .page {
+            page-break-after: always;
+            margin-bottom: 20px;
+        }
 
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                font-size: 7.5pt;
-                margin-top: 6px;
-                line-height: 1.2;
-                table-layout: fixed;
-            }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 10px;
+        }
 
-            th,
-            td {
-                border: 1px solid #000;
-                padding: 3px 4px;
-                text-align: center;
-                vertical-align: middle;
-                word-wrap: break-word;
-            }
+        .header h3 {
+            margin: 0;
+            font-size: 11px;
+            font-weight: bold;
+        }
 
-            thead th {
-                background-color: #FFEB3B;
-                font-weight: bold;
-            }
+        .header p {
+            margin: 2px 0;
+            font-size: 9px;
+        }
 
-            .left-align {
-                text-align: left;
-            }
+        .info-section {
+            margin: 10px 0;
+            font-size: 9px;
+        }
 
-            .vertical-text {
-                writing-mode: vertical-rl;
-                transform: rotate(180deg);
-                font-weight: bold;
-                text-align: center;
-            }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: 9px;
+        }
 
-            .signature-section {
-                margin-top: 25px;
-                display: flex;
-                justify-content: space-between;
-                font-size: 9pt;
-            }
+        table thead {
+            background-color: #ffeb3b;
+        }
 
-            .signature-box {
-                text-align: center;
-                width: 45%;
-            }
+        table th {
+            border: 1px solid #000;
+            padding: 4px 2px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 8px;
+        }
 
-            @media print {
-                @page {
-                    size: A4;
-                    margin: 12mm 12mm;
-                }
+        table td {
+            border: 1px solid #000;
+            padding: 3px 2px;
+            text-align: center;
+            font-size: 8px;
+        }
 
-                body * {
-                    visibility: hidden;
-                }
+        table td.left {
+            text-align: left;
+            padding-left: 5px;
+        }
 
-                #print-area,
-                #print-area * {
-                    visibility: visible;
-                }
+        .kategori {
+            font-weight: bold;
+            background-color: #f0f0f0;
+        }
 
-                #print-area {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                }
+        .signature-section {
+            margin-top: 30px;
+            display: table;
+            width: 100%;
+        }
 
-                header,
-                .fi-header,
-                .fi-sidebar,
-                .fi-topbar,
-                .fi-page-header {
-                    display: none !important;
-                }
-            }
-        </style>
+        .sig-info {
+            margin-bottom: 20px;
+            font-size: 9px;
+        }
 
-        {{-- ✅ HEADER --}}
-        <div class="manual-header">
-            <img src="{{ asset('images/plnt.png') }}" alt="Logo PLN" style="height: 55px;">
-            <div>
-                <div style="font-size: 9pt; font-style: italic;">PT PLN (Persero)</div>
-                <div style="font-size: 9pt; font-style: italic;">ULP Ahmad Yani Banjarmasin</div>
-                <div style="font-size: 9pt; font-style: italic;">Laporan Kegiatan Gelar Alat Operasional</div>
-            </div>
+        .sig-left {
+            float: left;
+            width: 45%;
+        }
+
+        .sig-right {
+            float: right;
+            width: 45%;
+            text-align: right;
+        }
+
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+
+        .sig-boxes {
+            display: table;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .sig-box {
+            display: table-cell;
+            width: 23%;
+            text-align: center;
+            font-size: 8px;
+            padding: 0 5px;
+        }
+
+        .sig-name {
+            margin-top: 50px;
+            font-weight: bold;
+            margin-bottom: 2px;
+        }
+
+        .sig-line {
+            border-top: 1px solid #000;
+            width: 100%;
+            margin: 2px 0 2px 0;
+            height: 1px;
+        }
+
+        .sig-position {
+            font-size: 7px;
+            margin-top: 2px;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <!-- HEADER -->
+        <div class="header">
+            <h3>PT PLN (PERSERO)</h3>
+            <p>ULP Ahmad Yani Banjarmasin</p>
+            <p><strong>LAPORAN KEGIATAN GELAR ALAT OPERASIONAL</strong></p>
         </div>
 
-        {{-- ✅ TABEL --}}
+        <!-- INFO MOBIL -->
+        <div class="info-section">
+            <strong>Mobil:</strong> {{ $gelar->mobil->nama_tim ?? '-' }} 
+            {{ $gelar->mobil->no_unit ?? '-' }} 
+            {{ $gelar->mobil->nomor_plat ?? '-' }}
+        </div>
+
+        <!-- TABEL -->
         <table>
             <thead>
                 <tr>
-                    <th style="width: 4%;" rowspan="2"></th>
-                    <th style="width: 4%;" rowspan="2">No</th>
-                    <th style="width: 38%;" rowspan="2">
-                        {{ $gelar->mobil->nama_tim ?? '-' }}
-                        {{ $gelar->mobil->no_unit ?? '-' }}
-                        {{ $gelar->mobil->nomor_plat ?? '-' }}
-                    </th>
-                    <th style="width: 6%;" rowspan="2">Satuan</th>
-                    <th style="width: 18%;" colspan="3">KONDISI</th>
-                    <th style="width: 30%;" rowspan="2">Ket</th>
-                </tr>
-                <tr>
-                    <th style="width: 6%;">B</th>
-                    <th style="width: 6%;">R</th>
-                    <th style="width: 6%;">H</th>
+                    <th style="width: 3%;">No</th>
+                    <th style="width: 35%;">Nama Alat</th>
+                    <th style="width: 6%;">Satuan</th>
+                    <th style="width: 4%;">Baik</th>
+                    <th style="width: 4%;">Rusak</th>
+                    <th style="width: 4%;">Hilang</th>
+                    <th style="width: 44%;">Keterangan</th>
                 </tr>
             </thead>
             <tbody>
@@ -136,96 +177,76 @@
                     $rowNumber = 1;
                 @endphp
 
-                @foreach ($grouped as $kategori => $items)
-                    @foreach ($items as $index => $detail)
+                @forelse ($grouped as $kategori => $items)
+                    <tr class="kategori">
+                        <td colspan="7" style="text-align: left; background-color: #e8e8e8;">
+                            {{ strtoupper($kategori) }}
+                        </td>
+                    </tr>
+                    @foreach ($items as $detail)
                         <tr>
-                            @if ($index === 0)
-                                <td class="vertical-text" rowspan="{{ $items->count() }}">
-                                    {{ strtoupper(str_replace('_', ' ', $kategori)) }}
-                                </td>
-                            @endif
                             <td>{{ $rowNumber++ }}</td>
-                            <td class="left-align">{{ $detail->alat->nama_alat ?? '-' }}</td>
+                            <td class="left">{{ $detail->alat->nama_alat ?? '-' }}</td>
                             <td>{{ $detail->alat->satuan ?? 'bh' }}</td>
-                            <td style="font-size: 11pt;">{{ $detail->status_alat == 'Baik' ? '✔' : '' }}</td>
-                            <td style="font-size: 11pt;">{{ $detail->status_alat == 'Rusak' ? '✔' : '' }}</td>
-                            <td style="font-size: 11pt;">{{ $detail->status_alat == 'Hilang' ? '✔' : '' }}</td>
-                            <td class="left-align">{{ $detail->keterangan ?? '-' }}</td>
+                            <td>{{ $detail->status_alat == 'Baik' ? '✓' : '' }}</td>
+                            <td>{{ $detail->status_alat == 'Rusak' ? '✓' : '' }}</td>
+                            <td>{{ $detail->status_alat == 'Hilang' ? '✓' : '' }}</td>
+                            <td class="left">{{ $detail->keterangan ?? '-' }}</td>
                         </tr>
                     @endforeach
-                @endforeach
+                @empty
+                    <tr>
+                        <td colspan="7" style="text-align: center;">Tidak ada data alat</td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
 
-        {{-- ✅ TANDA TANGAN --}}
-        @php
-            $tanggalCetak = $gelar->confirmed_at
-                ? \Carbon\Carbon::parse($gelar->confirmed_at)->translatedFormat('d F Y')
-                : now()->translatedFormat('d F Y');
-        @endphp
+        <!-- TANDA TANGAN -->
+        <div class="signature-section clearfix">
+            @php
+                $tanggalCetak = $gelar->confirmed_at 
+                    ? \Carbon\Carbon::parse($gelar->confirmed_at)->translatedFormat('d F Y')
+                    : now()->translatedFormat('d F Y');
+            @endphp
 
-        <div style="margin-top: 15px; font-size: 8pt;">
-            {{-- Header lokasi & tanggal --}}
-            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                <div style="text-align: left;">
-                    PT PLN (Persero) UP3 Banjarmasin<br>
+            <div class="sig-info">
+                <div class="sig-left">
+                    <strong>PT PLN (Persero) UP3 Banjarmasin</strong><br>
                     ULP AHMAD YANI
                 </div>
-                <div style="text-align: right;">
-                    Banjarmasin, {{ $tanggalCetak }}<br>
+                <div class="sig-right">
+                    <strong>Banjarmasin, {{ $tanggalCetak }}</strong><br>
                     PT PLN Nusa Daya UL Banjarmasin<br>
                     ULP AHMAD YANI
                 </div>
             </div>
 
-            {{-- Tanda tangan --}}
-            <div style="display: flex; justify-content: space-between; margin-top: 10px;">
-                {{-- Kiri --}}
-                <div style="width: 48%; text-align: center;">
-                    <div style="margin-bottom: 30px;">
-                        <div style="font-size: 8pt;">
-                            <strong style="display: block;">NAUFAL NAJWAN</strong>
-                            <div style="border-top: 1px solid #000; margin-top: 2px; width: 80%; margin-left:auto; margin-right:auto;"></div>
-                            <div style="margin-top: 2px;">Team Leader K3LK</div>
-                        </div>
-                    </div>
+            <div style="clear: both;"></div>
 
-                    <div>
-                        <div style="font-size: 8pt;">
-                            <strong style="display: block;">FAHRUL</strong>
-                            <div style="border-top: 1px solid #000; margin-top: 2px; width: 80%; margin-left:auto; margin-right:auto;"></div>
-                            <div style="margin-top: 2px;">Team Leader K3LK</div>
-                        </div>
-                    </div>
+            <div class="sig-boxes">
+                <div class="sig-box">
+                    <div class="sig-name">NAUFAL NAJWAN</div>
+                    <div class="sig-line"></div>
+                    <div class="sig-position">Team Leader K3LK</div>
                 </div>
-
-                {{-- Kanan --}}
-                <div style="width: 48%; text-align: center;">
-                    <div style="margin-bottom: 30px;">
-                        <div style="font-size: 8pt;">
-                            <strong style="display: block;">NARI</strong>
-                            <div style="border-top: 1px solid #000; margin-top: 2px; width: 80%; margin-left:auto; margin-right:auto;"></div>
-                            <div style="margin-top: 2px;">Supervisor</div>
-                        </div>
-                    </div>
-
-                    <div style="font-size: 8pt;">
-                        <strong style="display: block;">WIDIANTO</strong>
-                        <div style="border-top: 1px solid #000; margin-top: 2px; width: 80%; margin-left:auto; margin-right:auto;"></div>
-                        <div style="margin-top: 2px;">Manager ULP</div>
-                    </div>
+                <div class="sig-box">
+                    <div class="sig-name">FAHRUL</div>
+                    <div class="sig-line"></div>
+                    <div class="sig-position">Team Leader K3LK</div>
+                </div>
+                <div class="sig-box">
+                    <div class="sig-name">NARI</div>
+                    <div class="sig-line"></div>
+                    <div class="sig-position">Supervisor</div>
+                </div>
+                <div class="sig-box">
+                    <div class="sig-name">WIDIANTO</div>
+                    <div class="sig-line"></div>
+                    <div class="sig-position">Manager ULP</div>
                 </div>
             </div>
         </div>
-
-        {{-- ✅ JS Print Trigger --}}
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                Livewire.on('triggerPrint', () => {
-                    // Call the print method in the Livewire component
-                    Livewire.emit('print');
-                });
-            });
-        </script>
     </div>
-</x-filament-panels::page>
+</body>
+</html> 
