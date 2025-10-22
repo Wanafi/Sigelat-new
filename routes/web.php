@@ -4,6 +4,7 @@ use App\Models\Alat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\QrCodeController;
+use App\Http\Controllers\LaporanGelarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,3 +63,8 @@ Route::put('/scan/{alat}/update-status', function (Request $request, Alat $alat)
 
     return back()->with('success', 'Status alat berhasil diperbarui.');
 })->name('scan.barcode.update-status');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/laporan-gelar/{id}', [LaporanGelarController::class, 'show'])
+        ->name('laporan-gelar.show');
+});
