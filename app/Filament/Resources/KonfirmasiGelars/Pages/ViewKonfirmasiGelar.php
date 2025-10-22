@@ -29,7 +29,7 @@ class ViewKonfirmasiGelar extends ViewRecord
                 ->modalHeading('Konfirmasi Laporan')
                 ->modalDescription('Apakah Anda yakin ingin mengkonfirmasi laporan ini? Setelah dikonfirmasi, Anda dapat mencetak dokumen PDF.')
                 ->modalSubmitActionLabel('Ya, Konfirmasi')
-                ->visible(fn(Gelar $record): bool => !$record->is_confirmed)
+                ->visible(fn (?Gelar $record): bool => $record?->is_confirmed === false)
                 ->action(function (Gelar $record): void {
                     $record->update([
                         'is_confirmed' => true,
@@ -48,7 +48,7 @@ class ViewKonfirmasiGelar extends ViewRecord
                 ->label('Cetak PDF')
                 ->icon('heroicon-o-printer')
                 ->color('primary')
-                ->visible(fn(Gelar $record): bool => $record->is_confirmed)
+                ->visible(fn (?Gelar $record): bool => $record?->is_confirmed === true)
                 ->url(fn(Gelar $record) => route('laporan-gelar.show', $record->id))
                 ->openUrlInNewTab(),
         ];
