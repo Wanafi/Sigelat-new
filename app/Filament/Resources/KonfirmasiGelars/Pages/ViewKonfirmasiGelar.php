@@ -32,7 +32,7 @@ class ViewKonfirmasiGelar extends ViewRecord
                 ->modalHeading('Konfirmasi Laporan')
                 ->modalDescription('Apakah Anda yakin ingin mengkonfirmasi laporan ini? Setelah dikonfirmasi, Anda dapat mencetak dokumen PDF.')
                 ->modalSubmitActionLabel('Ya, Konfirmasi')
-                ->visible(fn(Gelar $record): bool => !$record->is_confirmed) // Use type-hinted $record
+                ->visible(fn (?Gelar $record): bool => $record?->is_confirmed != true)
                 ->action(function (Gelar $record): void { // Use type-hinted $record
                     $record->update([
                         'is_confirmed' => true,
@@ -51,7 +51,7 @@ class ViewKonfirmasiGelar extends ViewRecord
                 ->label('Cetak PDF')
                 ->icon('heroicon-o-printer')
                 ->color('primary')
-                ->visible(fn(Gelar $record): bool => $record->is_confirmed) // Use type-hinted $record
+                ->visible(fn (?Gelar $record): bool => $record?->is_confirmed == true)// Use type-hinted $record
                 ->action(function (ViewKonfirmasiGelar $livewire, Gelar $record): StreamedResponse {
                     return $livewire->generatePdf($record);
                 }),
